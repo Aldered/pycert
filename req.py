@@ -1,3 +1,5 @@
+#Becerra Alvarado Hugo Alonso
+#Cabrera Balderas Carlos Eduardo
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #UNAM-CERT
@@ -20,6 +22,10 @@ def addOptions():
     parser.add_option('-r','--report', dest='report', default=None, help='File where the results will be reported.')
     parser.add_option('-U', '--user', dest='user', default=None, help='User that will be tested during the attack.')
     parser.add_option('-P', '--password', dest='password', default=None, help='Password that will be tested during the attack.')
+    ''' 
+    Se agregara la opcion TOR que va sin opciones gracias al store_true.
+    '''
+    parser.add_option('-T', '--tor', dest='tor', default=None, action=store_true, help='Se hara con tor')
     opts,args = parser.parse_args()
     return opts
     
@@ -36,7 +42,18 @@ def buildURL(server,port, protocol = 'http'):
     url = '%s://%s:%s' % (protocol,server,port)
     return url
 
-
+def tor(options):
+	''' 
+	Si a -T (tor) no se le ponen opciones hace un nodo de salida de nuestro equipo
+	a tor y este se encarga de hacerlo al servidor al cual estamos queriendo acceder
+	127.0.0.1 es para nuestro equipo y 9050 es el puerto default de tor, solo con-
+	figuramos los sockets.
+	'''
+	if options.tor =! None:
+		socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", 9050)
+		socket.socket = socks.socksocket
+	else:
+		print "Se hara sin opciones"
 def makeRequest(host, nom, passi):
 	with open("listanom", 'r') as user, open("passi, 'r') as passwd
 		lis_nom = user.readlines()
