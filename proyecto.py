@@ -23,7 +23,7 @@ def addOptions():
 	parser.add_option('-s', '--server', dest='server', default=None, help='Nos da la version del servidor')
 	parser.add_option('-p', '--php', dest='php', action='store_true', default=None, help="Nos da la version de PHP.")
 	parser.add_option('-m', '--http', dest= 'http', default=None, action='store_true', help="Nos da los metodos http usados.")
-	parser.add_option('-C', '--cms', dest='cms', default=None, help="Nos da los cms.")
+	parser.add_option('-C', '--cms', dest='cms', action='store_true', default=None, help="Nos da los cms.")
 	parser.add_option('-r', '--reporte', dest='reporte', default=None, action="store_true", help="Nos genera un reporte.")
 	parser.add_option('-t', '--tor', dest='tor', default=None, action="store_true", help="Se usara tor.")
 	parser.add_option('-b', '--busqueda', dest='busqueda', default=None, action="store_true", help="Se hara la busqueda.")
@@ -48,18 +48,19 @@ if __name__ == '__main__':
 		if opts.server != False:
 			re_server = get(opts.server).headers['server']
 			f1.write("\nEl servidor que usa es: %s\n" % re_server)
-			print re_server
+			print "La version del servidor es %s" % re_server
 		if opts.php == True:
 			re_php = get(opts.server).headers['x-powered-by']
 			f1.write("\nLa version de PHP que usa es: %s\n" % re_php)
-			print re_php
+			print "La version de PHP es %s" % re_php
 		if opts.http == True:
 			re_http = requests.options(opts.server)
 			f1.write("\nLos metodos http que usa son: %s\n" % re_http)
-			print re_http
+			print "Los metodos http que usa son: %s " % re_http
 		if opts.cms == True:
-			patron = r"meta name=\"generator\" content=\".*\""
-			print 'El cms que maneja es: %s ' % re.search(patron, get(opts.server))
+			#patron = re.search('<meta name=\"generator\" content=\".*\"', (opts.server).headers[])
+			print "El cms es: %s" % patron
+			 
 		if opts.reporte == True:
 			print "Ingresaste reporte."
 		if opts.tor == True:
