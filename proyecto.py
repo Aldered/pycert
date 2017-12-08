@@ -58,7 +58,7 @@ if __name__ == '__main__':
 			f1.write("\nLos metodos http que usa son: %s\n" % re_http)
 			print "Los metodos http que usa son: %s " % re_http
 		if opts.cms == True:
-			#patron = re.search('<meta name=\"generator\" content=\".*\"', (opts.server).headers[])
+			patron = re.search('<meta name=\"generator\" content=\".*\"', opts.server)
 			print "El cms es: %s" % patron
 			 
 		if opts.reporte == True:
