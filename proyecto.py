@@ -21,7 +21,7 @@ def printError(msg, exit = False):
 def addOptions():
 	parser = optparse.OptionParser()
 	parser.add_option('-v','--verbose', dest='verbose', default=None, action= 'store_true', help='Detalles.') 
-	parser.add_option('-c', '--correo', dest='correo', default=None, help='Obtenemos el correo.')
+	parser.add_option('-c', '--correo', dest='correo', default=None, action='store_true', help='Obtenemos el correo.')
 	parser.add_option('-s', '--server', dest='server', default=None, help='Nos da la version del servidor')
 	parser.add_option('-p', '--php', dest='php', action='store_true', default=None, help="Nos da la version de PHP.")
 	parser.add_option('-m', '--http', dest= 'http', default=None, action='store_true', help="Nos da los metodos http usados.")
@@ -45,26 +45,32 @@ if __name__ == '__main__':
 		if opts.verbose == True:
 			print "Ingresaste verbose"
 		if opts.correo == True:
-			co = "[a-z]+\.*[a-z]*@.*\..*"
-			print 'Los correos son: ' % re.findall(co, get(opts.server))
+			pet = urllib2.Request(opts.server)
+			html1 = urllib2.urlopen(pet).read()
+			co = re.findall("[a-z]+\.*[a-z]*@.*\..*", html1)
+			f1.write("\nLos correos son: %s\n" % co) 
+			print 'Los correos son: %s' % co
 		if opts.server != False:
 			re_server = get(opts.server).headers['server']
 			f1.write("\nEl servidor que usa es: %s\n" % re_server)
 			print "La version del servidor es %s" % re_server
 		if opts.php == True:
-			re_php = get(opts.server).headers['x-powered-by']
+			re_php = options(opts.server).headers['X-Powered-By']
 			f1.write("\nLa version de PHP que usa es: %s\n" % re_php)
 			print "La version de PHP es %s" % re_php
 		if opts.http == True:
 			re_http = requests.options(opts.server)
-			f1.write("\nLos metodos http que usa son: %s\n" % re_http)
-			print "Los metodos http que usa son: %s " % re_http
+			if re_http.status_code == 200 or re_http.status_code == 302:
+				f1.write("\nLos metodos http que usa son: %s\n" % re_http)
+				print "Los metodos http que usa son: %s " % re_http
+			else:
+				print "Nope"
 		if opts.cms == True:
 			req = urllib2.Request(opts.server)
 			html = urllib2.urlopen(req).read()
 			patron = re.findall('<meta name=\"Generator\" content=\".*\"', html)
-			print "El cms es " + patron[0].split("\"")[3] + "\n"
-			 
+			f1.write("\nEl cms es: %s\n" % patron[0].split("\"")[3])
+			print "El cms es " + patron[0].split("\"")[3] 
 		if opts.reporte == True:
 			print "Ingresaste reporte."
 		if opts.tor == True:
