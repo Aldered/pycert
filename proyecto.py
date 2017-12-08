@@ -6,6 +6,7 @@ from re import findall
 from requests import get 
 from requests import options
 from requests.exceptions import ConnectionError
+from datetime import datetime
 import requests
 import urllib2
 import re
@@ -37,6 +38,22 @@ def checkOption(option):
 	if option.server is None:
 		printError('Especifica un servidor.', True)
 
+def busqueda(opts):
+	try:
+		list = open('raft-small-files.txt', 'r')
+		print list
+		for l in list.readlines():
+			url_files = opts.server + "/" + l
+			nope = 0 
+			if url_files.status_code == 200:
+				for mala in url_files.history == 302:
+					nope = 1
+			if nope == 0: 
+				f1.write("\nArchivo(s) encontrado(s): \n" + url_files)
+		list.close()
+	except Exception as e:
+		printError("No hay archivos")
+
 if __name__ == '__main__':
 	try:
 		opts = addOptions()
@@ -59,12 +76,9 @@ if __name__ == '__main__':
 			f1.write("\nLa version de PHP que usa es: %s\n" % re_php)
 			print "La version de PHP es %s" % re_php
 		if opts.http == True:
-			re_http = requests.options(opts.server)
-			if re_http.status_code == 200 or re_http.status_code == 302:
-				f1.write("\nLos metodos http que usa son: %s\n" % re_http)
-				print "Los metodos http que usa son: %s " % re_http
-			else:
-				print "Nope"
+			re_http = requests.options(opts.server).headers['allow']
+			f1.write("\nLos metodos http que usa son: %s\n" % re_http)
+			print "Los metodos http que usa son: %s " % re_http
 		if opts.cms == True:
 			req = urllib2.Request(opts.server)
 			html = urllib2.urlopen(req).read()
@@ -72,11 +86,11 @@ if __name__ == '__main__':
 			f1.write("\nEl cms es: %s\n" % patron[0].split("\"")[3])
 			print "El cms es " + patron[0].split("\"")[3] 
 		if opts.reporte == True:
-			print "Ingresaste reporte."
+			f1.write("\nFecha: " + str(datetime.now()) + "\nURL: " + opts.server)
 		if opts.tor == True:
 			print "Ingresaste tor."
 		if opts.busqueda == True:
-			print "Ingresaste busqueda."
+			busqueda(opts)
 		if opts.archivo == True:
 			arch = open(opts.archivo, 'r')
 			for n in arch.readlines():
