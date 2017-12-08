@@ -2,10 +2,12 @@
 #Cabrera Balderas Carlos Eduardo
 
 from re import search
+from re import findall
 from requests import get 
 from requests import options
 from requests.exceptions import ConnectionError
 import requests
+import urllib2
 import re
 import sys
 import optparse
@@ -58,8 +60,10 @@ if __name__ == '__main__':
 			f1.write("\nLos metodos http que usa son: %s\n" % re_http)
 			print "Los metodos http que usa son: %s " % re_http
 		if opts.cms == True:
-			patron = re.search('<meta name=\"generator\" content=\".*\"', opts.server)
-			print "El cms es: %s" % patron
+			req = urllib2.Request(opts.server)
+			html = urllib2.urlopen(req).read()
+			patron = re.findall('<meta name=\"Generator\" content=\".*\"', html)
+			print "El cms es " + patron[0].split("\"")[3] + "\n"
 			 
 		if opts.reporte == True:
 			print "Ingresaste reporte."
