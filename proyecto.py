@@ -60,7 +60,7 @@ def checkOption(option):
 
 def busqueda(opts):
 	'''
-	Recibirá como parámetro la opts para poner la url.
+	Recibirá como parámetro la opts para poner la URL.
 	Devolverá los archivos que hagan match con la condición.
 	'''
 	try:
@@ -124,10 +124,10 @@ if __name__ == '__main__':
 			"""
 			try:
 				re_php = options(opts.server).headers['X-Powered-By']
-				f1.write("\nLa version de PHP que usa es: %s\n" % re_php)
-				print "La version del servidor es %s" % re_php
+				f1.write("\nLa versión de PHP que usa es: %s\n" % re_php)
+				print "La versión del servidor es %s" % re_php
 			except:
-				print 'No se pudo obtener la versión de php uwu'
+				print 'No se pudo obtener la versión de PHP uwu'
 
 		if opts.http == True:
 			"""
@@ -164,9 +164,9 @@ if __name__ == '__main__':
 			try:
 				busqueda(opts)
 			except:
-				print 'No hay busqueda xS'
+				print 'No hay búsqueda xS'
 	except Exception as e:
-		printError('Ocurrio un error inesperado')
+		printError('Ocurrió un error inesperado.')
 		printError(e, True)
 
 f1.close()
